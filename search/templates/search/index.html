@@ -1,0 +1,11 @@
+<html>
+    {% if auth_list %}
+        <ul>
+            {% for auth in auth_list %}
+                <li>{{ auth.name }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>확인불가</p>
+    {% endif %}
+</html>
