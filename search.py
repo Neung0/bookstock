@@ -3,13 +3,6 @@ from selenium import webdriver
 from bs4 import BeautifulSoup as BS
 import requests
 import re
-# 장고 연동 위한 import
-import os
-# Python이 실행될 때 DJANGO_SETTINGS_MODULE이라는 환경 변수에 현재 프로젝트의 settings.py파일 경로를 등록합니다.
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "websaver.settings")
-# 이제 장고를 가져와 장고 프로젝트를 사용할 수 있도록 환경을 만듭니다.
-import django
-django.setup()
 
 # 책 재고 체크 위한 크롤링
 # url = 서점의 링크, s = 지점명 Selector, t = 재고수량 Selector
