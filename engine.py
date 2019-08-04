@@ -22,6 +22,8 @@ def search_book(url):
     else:
         stock = chk_stock(url[0], 'th', 'a')
         kb = {}
+        # stock[0] : 지점명 리스트
+        # stock[1] : 재고수량 리스트
         for i, j in zip(stock[0], stock[1]):
             i = i.text
             i = i.strip()
@@ -54,7 +56,7 @@ def book_info(soup):
     info['title'] = con.select_one('h2 > a').text
     info['img'] = con.select_one('.thumb_type img')['src']
     info['auth'] = inner.select('a')[0].text
-    info['pub'] = inner.select('a')[1].text
+    info['pub'] = inner.find('a', {'class':'N=a:bil.publisher'}).text
     bID = soup.select_one('.book_info_inner')
     p = re.compile("\d{13}") # isbn은 숫자 13자리
     info['isbn'] = (p.findall(bID.text))[0]
@@ -76,24 +78,26 @@ def book_url(soup):
     except:
         bd = ''
     return [kb, yp, bd]
-
 # 네이버 도서페이지에서 입력받은 책 검색
 def search_engine(txt):
-    # 네이버 도서에서 해당 책 검색하는 URL
+    driver = webdriver.Chrome(r'C:\Users\smddu\Documents\chromedriver\chromedriver.exe')   # 네이버 도서에서 해당 책 검색하는 URL
     url = 'https://book.naver.com/search/search.nhn?sm=sta_hty.book&sug=&where=nexearch&query=' + txt
     driver.get(url)
     # 첫번째 검색된 책의 url 추출
-    b_url = driver.find_element_by_xpath('//*[@id="searchBiblioList"]/li[1]/dl/dt/a').get_attribute('href')
-    driver.get(b_url)
-    soup = BS(driver.page_source, 'html.parser')
+    try:
+        b_url = driver.find_element_by_xpath('//*[@id="searchBiblioList"]/li[1]/dl/dt/a').get_attribute('href')
+        driver.get(b_url)
+        soup = BS(driver.page_source, 'html.parser')
+    except:
+            return False
     return soup
 
-if __name__ == "__main__":    
-    driver = webdriver.Chrome(r'C:\Users\smddu\Documents\chromedriver\chromedriver.exe')
+if __name__ == "__main__":
     txt = input('도서명을 입력하세요 : ')
     soup = search_engine(txt)
+    #책입력이 잘못되었을 때
     bInfo = book_info(soup)
     url = book_url(soup)
     stock = search_book(url)
     print(bInfo)
-    driver.close()
+    
