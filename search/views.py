@@ -57,3 +57,6 @@ def result(request, isbn):
     stock = engine.search_book(b_url)
     content = {'kb': stock[0], 'yp': stock[1], 'bd': stock[2]}
     return render(request, 'search/result.html', content)
+
+def maptest(request):
+    return render(request, 'search/maptest.html')
