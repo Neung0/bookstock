@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <ul>
+        {% for book in title_query %}
+            <li>{{ book.title }}</li>
+            <li>{{ book.auth }}</li>
+            <li>{{ book.pub }}</li>
+            <li><img src={{ book.image }}></li>
+            <input type= "submit" value = "재고보기" /> 
+        {% endfor %}
+        </ul>
+        <p>찾는 책 없는데?</p>
+        <form action="/search/{{ input }}/crawler/" method="post">
+            {% csrf_token %}
+            <input type="submit" value="검색">
+        </form>
+    </body>
+</html>
